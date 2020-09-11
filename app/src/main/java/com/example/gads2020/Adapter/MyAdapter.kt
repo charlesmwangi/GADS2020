@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.gads2020.Dao.LearningLeaders
 import com.example.gads2020.Fragments.LearnersFragment
 import com.example.gads2020.Fragments.SkillIqFragment
 
@@ -27,6 +26,7 @@ internal class MyAdapter(
             else -> getItem(position)
         }
     }
+
     override fun getCount(): Int {
         return totalTabs
     }

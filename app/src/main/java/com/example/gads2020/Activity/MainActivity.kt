@@ -11,33 +11,31 @@ import com.example.gads2020.Adapter.MyAdapter
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
-lateinit var tabLayout: TabLayout
+    lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
-        title = "LEADERBOARD"
-        tabLayout.addTab(tabLayout.newTab().setText("Learning Leaders"))
-        tabLayout.addTab(tabLayout.newTab().setText("Skill IQ Leaders"))
-
+        title = getString(R.string.leaderboard_title)
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.learning_leaders_tab)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.skill_iq_tab)))
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-        val adapter = MyAdapter(this, supportFragmentManager,
-            tabLayout.tabCount)
-
+        val adapter = MyAdapter(this, supportFragmentManager, tabLayout.tabCount)
         viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
+                tabLayout.setSelectedTabIndicatorColor(resources.getColor(android.R.color.white))
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //Inflate the menu and add the items
         menuInflater.inflate(R.menu.menu, menu)
@@ -52,10 +50,9 @@ lateinit var tabLayout: TabLayout
             R.id.submit -> {
                 val intent = Intent(this, SubmitProject::class.java)
                 startActivity(intent)
-            true
+                true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

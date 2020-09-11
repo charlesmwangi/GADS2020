@@ -4,11 +4,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ServiceBuilder {
+object SubmitProjectService {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://gadsapi.herokuapp.com")
+        .baseUrl("https://docs.google.com/forms/d/e/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

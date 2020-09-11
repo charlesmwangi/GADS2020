@@ -10,7 +10,6 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,19 +18,30 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:srcCompat="@drawable/gads">
+            android:background="?attr/colorPrimary">
 
-            <ImageView
-                android:id="@+id/gadsImageView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
-                app:srcCompat="@drawable/gads" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#000000"
+                    android:src="@drawable/arrow_back_white_24dp" />
+
+                <ImageView
+                    android:id="@+id/gadsImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    app:srcCompat="@drawable/gads" />
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
 
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<include layout="@layout/submit_form"/>
+    <include layout="@layout/submit_form" />
 </androidx.constraintlayout.widget.ConstraintLayout>

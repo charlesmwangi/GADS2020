@@ -5,13 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.gads2020.Adapter.IqRecyclerAdapter
+import com.example.gads2020.Adapter.RecyclerAdapter
+import com.example.gads2020.Dao.LearningLeaders
+import com.example.gads2020.Interface.GadsEndpoint
 
 import com.example.gads2020.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.example.gads2020.Retrofit.ServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * A simple [Fragment] subclass.
@@ -19,43 +25,54 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class SkillIqFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
+    lateinit var recyclerAdapter: IqRecyclerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        retainInstance = true
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_learners, container, false)
+    ): View? =
+        inflater.inflate(R.layout.fragment_learners_list, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val request = ServiceBuilder.buildService(GadsEndpoint::class.java)
+        val call = request.getIq()
+
+        call.enqueue(object : Callback<List<LearningLeaders>> {
+            override fun onResponse(
+                call: Call<List<LearningLeaders>>,
+                response: Response<List<LearningLeaders>>
+            ) {
+                if (response.body() != null) {
+                    recyclerView = view.findViewById(R.id.recyclerview) as RecyclerView
+                    recyclerAdapter = IqRecyclerAdapter(response.body()!!)
+                    recyclerView.layoutManager = LinearLayoutManager(activity)
+                    recyclerView.adapter = recyclerAdapter
+
+                    recyclerAdapter.setLeadersListItems(response.body()!!)
+
+                }
+            }
+
+
+            override fun onFailure(call: Call<List<LearningLeaders>>, t: Throwable) {
+                Toast.makeText(activity, "${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
+
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SkillIqFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SkillIqFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): LearnersFragment = LearnersFragment()
     }
 }
